@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#07131d">
+<title>愿星光照耀你的未来 · 圣诞快乐</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;color:#f6eddb;background:radial-gradient(ellipse at 30% 52%,#133436,#081723 52%,#060e18 85%);font-family:system-ui,sans-serif}
+main{min-height:100svh;max-width:1150px;margin:auto;display:grid;grid-template-columns:1.2fr 1fr;align-items:center;padding:24px 42px;position:relative}
+canvas{width:100%;height:min(84svh,690px);display:block}
+section{padding:30px 0 44px 22px}
+.eyebrow{font:700 clamp(22px,3.1vw,36px)/1.15 Georgia,serif;letter-spacing:.06em;color:#f4cb8c;text-wrap:balance}
+.recipient{display:block;margin-top:8px;font-size:clamp(23px,3.3vw,39px);letter-spacing:.03em;color:#fff0cf}
+h1{margin:.35em 0 .25em;font-family:"Songti SC","Noto Serif CJK SC",serif;font-size:clamp(31px,4.45vw,62px);font-weight:500;letter-spacing:.07em}
+.wish{margin:25px 0 14px;color:#e8bc80;font-family:serif;font-size:20px;letter-spacing:.25em}
+p{color:#d6ded8;line-height:1.95;font-size:16px}
+button{margin-top:14px;padding:12px 19px;border-radius:50px;border:1px solid #b48f60;background:#172c31;color:#f9e1b7;font:inherit;cursor:pointer}
+button:hover{background:#284347}
+button:focus-visible{outline:2px solid #f9e1b7;outline-offset:4px}
+@media(max-width:700px){main{display:block;padding:8px 24px 30px}canvas{height:clamp(290px,58svh,505px)}section{text-align:center;padding:0}.wish{margin:16px auto}h1{margin-top:.2em}p{margin:10px auto}button{margin-top:10px}}
+</style>
+</head>
+<body>
+<main>
+<canvas aria-label="星光环绕、缓缓旋转的圣诞树" role="img"></canvas>
+<section>
+<div class="eyebrow">MERRY CHRISTMAS<span class="recipient">Thomas Yang</span></div>
+<h1>愿星光照耀你的未来</h1>
+<p class="wish">好运与欢喜同在</p>
+<p>希望这个圣诞的你被温暖、快乐和爱包围！</p>
+<button type="button" aria-pressed="false">♫　播放《铃儿响叮当》</button>
+<p id="status" role="status" hidden></p>
+<audio src="bells.wav" preload="none" loop></audio>
+</section>
+</main>
+<script>
+const audio=document.querySelector("audio");
+const button=document.querySelector("button");
+const status=document.querySelector("#status");
+audio.volume=.64;
+function updateMusic(){
+  button.textContent=audio.paused?"♫　播放《铃儿响叮当》":"Ⅱ　暂停音乐";
+  button.setAttribute("aria-pressed",String(!audio.paused));
+}
+audio.addEventListener("play",updateMusic);
+audio.addEventListener("pause",updateMusic);
+button.addEventListener("click",async()=>{
+  status.hidden=true;
+  if(!audio.paused){audio.pause();return;}
+  try{await audio.play();}
+  catch{status.textContent="音乐暂时无法播放，请再试一次。";status.hidden=false;}
+});
+const canvas=document.querySelector("canvas");
+const ctx=canvas.getContext("2d");
+const reduced=matchMedia("(prefers-reduced-motion: reduce)");
+const tau=Math.PI*2;
+const random=Math.random;
+const colors=["#6ddbad","#dcfbce","#f9c27d","#fff0b7","#e58f87"];
+const tree=Array.from({length:1350},()=>{
+  const h=random();
+  const tier=1-.28*((h*7)%1);
+  return {h,r:(.025+h*.47)*tier*(.36+.64*Math.sqrt(random())),a:random()*tau,
+    size:.55+random()*1.2,color:colors[Math.floor(random()*colors.length)],seed:random()*tau};
+});
+for(let i=0;i<300;i++){
+  const h=i/299;
+  tree.push({h,r:.035+h*.46,a:h*tau*5,seed:h*50,size:1.4,color:"#ffd482",ribbon:true});
+}
+const snow=Array.from({length:85},()=>({x:random(),y:random(),speed:.01+random()*.035,r:.45+random()*1.45}));
+let width,height;
+function resize(){
+  const ratio=Math.min(2,devicePixelRatio||1);
+  width=canvas.clientWidth;
+  height=canvas.clientHeight;
+  canvas.width=Math.round(width*ratio);
+  canvas.height=Math.round(height*ratio);
+  ctx.setTransform(ratio,0,0,ratio,0,0);
+}
+window.addEventListener("resize",resize);
+resize();
+function draw(ms){
+  const time=reduced.matches?0:ms/1000;
+  ctx.clearRect(0,0,width,height);
+  const scale=Math.min(width*.94,height*.82);
+  const cx=width*.5;
+  const top=height*.13;
+  const base=top+scale;
+  ctx.fillStyle="#dceeea";
+  for(const flake of snow){
+    ctx.globalAlpha=.16+flake.r*.2;
+    ctx.beginPath();
+    ctx.arc(flake.x*width+5*Math.sin(time+flake.y*20),((flake.y+time*flake.speed)%1)*height,flake.r,0,tau);
+    ctx.fill();
+  }
+  ctx.globalAlpha=1;
+  const glow=ctx.createRadialGradient(cx,base,0,cx,base,scale*.54);
+  glow.addColorStop(0,"#82d8ac38");
+  glow.addColorStop(1,"#82d8ac00");
+  ctx.save();
+  ctx.translate(cx,base);
+  ctx.scale(1,.22);
+  ctx.translate(-cx,-base);
+  ctx.fillStyle=glow;
+  ctx.fillRect(cx-scale,base-scale,scale*2,scale*2);
+  ctx.restore();
+  const projected=tree.map(point=>{
+    const a=point.a+time*.43;
+    return {point,x:Math.cos(a)*point.r,z:Math.sin(a)*point.r};
+  }).sort((a,b)=>a.z-b.z);
+  for(const {point,x,z} of projected){
+    const perspective=1+z*.36;
+    const px=cx+x*scale*perspective;
+    const py=top+point.h*scale+z*scale*.19;
+    const twinkle=.78+.22*Math.sin(time*2.2+point.seed);
+    ctx.globalAlpha=Math.min(1,(.61+z*.71)*twinkle+(point.ribbon?.18:0));
+    ctx.fillStyle=point.color;
+    if(point.ribbon){ctx.shadowBlur=9;ctx.shadowColor=point.color;}
+    ctx.beginPath();
+    ctx.arc(px,py,point.size*perspective*(scale/470+.48)*.75,0,tau);
+    ctx.fill();
+    ctx.shadowBlur=0;
+  }
+  ctx.globalAlpha=1;
+  ctx.fillStyle="#fff0b5";
+  ctx.shadowColor="#ffcd79";
+  ctx.shadowBlur=28;
+  const sy=top-9;
+  const starSize=scale*.055;
+  ctx.beginPath();
+  for(let i=0;i<8;i++){
+    const a=i*Math.PI/4-Math.PI/2;
+    const r=i%2===0?starSize:starSize*.25;
+    const x=cx+Math.cos(a)*r;
+    const y=sy+Math.sin(a)*r;
+    if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+  }
+  ctx.closePath();ctx.fill();ctx.shadowBlur=0;
+  requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
+</script>
+</body>
+</html>
