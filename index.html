@@ -17,42 +17,218 @@ section{padding:30px 0 44px 22px}
 h1{margin:.35em 0 .25em;font-family:"Songti SC","Noto Serif CJK SC",serif;font-size:clamp(31px,4.45vw,62px);font-weight:500;letter-spacing:.07em}
 .wish{margin:25px 0 14px;color:#e8bc80;font-family:serif;font-size:20px;letter-spacing:.25em}
 p{color:#d6ded8;line-height:1.95;font-size:16px}
-button{margin-top:14px;padding:12px 19px;border-radius:50px;border:1px solid #b48f60;background:#172c31;color:#f9e1b7;font:inherit;cursor:pointer}
-button:hover{background:#284347}
-button:focus-visible{outline:2px solid #f9e1b7;outline-offset:4px}
-@media(max-width:700px){main{display:block;padding:8px 24px 30px}canvas{height:clamp(290px,58svh,505px)}section{text-align:center;padding:0}.wish{margin:16px auto}h1{margin-top:.2em}p{margin:10px auto}button{margin-top:10px}}
+@media(max-width:700px){main{display:block;padding:8px 24px 30px}canvas{height:clamp(290px,58svh,505px)}section{text-align:center;padding:0}.wish{margin:16px auto}h1{margin-top:.2em}p{margin:10px auto}}
+
+[hidden]{display:none!important}
+
+.intro{min-height:100svh;position:relative;isolation:isolate;overflow:hidden;
+  display:grid;place-items:center;padding:18px 16px;
+  background:radial-gradient(ellipse at 50% 30%,#fff0bb 0%,#efc66f 48%,#b9762f 100%)}
+.intro-content{display:grid;place-items:center;width:100%}
+.intro-act{grid-area:1/1;position:relative;display:grid;place-items:center;width:100%}
+.intro-portrait{width:min(76vw,53svh,420px);aspect-ratio:1;display:grid;place-items:center}
+.santa,.lebron{display:block;width:100%;height:100%;object-fit:contain;
+  filter:drop-shadow(0 10px 12px #82401232)}
+.santa{overflow:visible}
+.intro-line,.speech-bubble{position:absolute;margin:0;text-align:center;color:#4c2914;
+  font:700 clamp(19px,4.8vw,36px)/1.2 Georgia,serif}
+.intro-line{top:calc(100% + 8px);white-space:pre-wrap}
+.speech-bubble{bottom:calc(100% - 4px);padding:12px 20px;min-width:min(82vw,330px);
+  border-radius:22px;background:#fff8df;box-shadow:0 8px 24px #87441235}
+.speech-bubble::after{content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);
+  border:10px solid transparent;border-top-color:#fff8df}
+.intro-snow{position:absolute;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.intro-snow i{position:absolute;top:-12%;left:var(--x);width:var(--size);height:var(--size);
+  background:#fff8de;border-radius:50%;filter:blur(var(--blur));opacity:var(--opacity);
+  animation:gold-snow var(--time) var(--delay) linear infinite}
+@keyframes gold-snow{from{transform:translate(0,0)}to{transform:translate(var(--drift),112svh)}}
+@media(prefers-reduced-motion:reduce){.intro-snow i{animation-play-state:paused}}
+.audio-hint{position:fixed;z-index:2;bottom:max(14px,env(safe-area-inset-bottom));
+  left:50%;transform:translateX(-50%);max-width:calc(100% - 24px);width:max-content;
+  margin:0;padding:6px 12px;border-radius:999px;background:#21160fde;color:#fff3d9;font-size:13px}
+.waiting-for-reveal{visibility:hidden}
+
+.montage-act{position:absolute;inset:0}
+.montage-figure{position:absolute;left:var(--end-x);top:var(--end-y);
+  width:auto;height:min(40svh,310px);max-width:30vw;object-fit:contain;
+  transform:translate(-50%,-50%);visibility:hidden;
+  filter:drop-shadow(0 8px 10px #8240122e)}
+.montage-figure.entered{visibility:visible;animation:montage-enter 1.1s cubic-bezier(.22,.7,.24,1) both}
+@keyframes montage-enter{
+  from{opacity:0;left:var(--start-x);top:var(--start-y)}
+  28%{opacity:1}
+  to{opacity:1;left:var(--end-x);top:var(--end-y)}
+}
+@media(prefers-reduced-motion:reduce){.montage-figure.entered{animation:none}}
+
+.gift{position:relative;display:block;aspect-ratio:1.12;
+  filter:drop-shadow(0 9px 14px #74311445)}
+.gift-base,.gift-lid,.gift-bow{position:absolute;display:block}
+.gift-base{z-index:1;left:8%;right:8%;top:40%;bottom:0;border-radius:3% 3% 8% 8%;
+  background:linear-gradient(90deg,transparent 42%,#eab353 42%,#ffe5a1 50%,#eab353 58%,transparent 58%),
+    linear-gradient(145deg,#d8444d,#8d1735)}
+.gift-lid{z-index:2;inset:0 0 auto;height:48%;transform-origin:10% 88%}
+.gift-lid::before{content:"";position:absolute;inset:62% 0 0;border-radius:7%;
+  background:linear-gradient(90deg,transparent 42%,#edbd60 42%,#fff0af 50%,#edbd60 58%,transparent 58%),
+    linear-gradient(#ed6670,#bb253d);box-shadow:0 4px 6px #67112840}
+.gift-bow{left:50%;top:3%;width:37%;height:62%;transform:translateX(-50%)}
+.gift-bow::before,.gift-bow::after{content:"";position:absolute;top:5%;width:62%;height:84%;
+  border:5px solid #ffe297;border-radius:70% 70% 22% 70%;box-shadow:inset 0 0 0 1px #b95f26}
+.gift-bow::before{right:47%;transform:rotate(18deg)}
+.gift-bow::after{left:47%;transform:scaleX(-1) rotate(18deg)}
+.gift-trigger{position:absolute;z-index:2;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:clamp(88px,21vw,164px);padding:0;border:0;background:none;cursor:pointer;border-radius:16px;
+  animation:gift-appear .5s ease-out both}
+.gift-trigger .gift{width:100%}
+.gift-trigger:focus-visible{outline:3px solid #69321d;outline-offset:8px}
+@keyframes gift-appear{from{opacity:0;transform:translate(-50%,-50%) scale(.76)}
+  to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+.james-gift-act{position:absolute;inset:0;
+  --gift-size:min(65vw,32svh,288px);--gift-bottom:3svh;
+  --box-rim:calc(var(--gift-bottom) + var(--gift-size) * .5357)}
+.james-rise-window{position:absolute;inset:14% 0 calc(var(--box-rim) - 6px);overflow:hidden;display:grid;justify-items:center;align-items:end}
+.james-rise-window .intro-portrait{width:min(86vw,55svh,455px)}
+.james-gift{position:absolute;z-index:1;bottom:var(--gift-bottom);left:50%;transform:translateX(-50%);width:var(--gift-size)}
+.james-gift .gift-lid{animation:gift-open .8s ease-out both}
+@keyframes gift-open{to{transform:translate(-42%,-23%) rotate(-34deg)}}
+.james-entering{animation:james-rise 2.4s .35s cubic-bezier(.23,.7,.25,1) both}
+@keyframes james-rise{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.james-gift-act .speech-bubble{z-index:2;left:50%;top:clamp(12px,12svh,90px);bottom:auto;
+  transform:translateX(-50%);max-width:90vw;width:max-content}
+@media(prefers-reduced-motion:reduce){
+  .gift-trigger,.james-entering{animation:none}
+  .james-gift .gift-lid{animation:none;transform:translate(-42%,-23%) rotate(-34deg)}
+}
+
+.james-gift-act .card-bubble{background:#f5e9ff;color:#4e315e}
+.card-bubble::after{border-top-color:#f5e9ff}
+.card-act{position:absolute;inset:0;display:grid;place-items:center}
+.card-display{position:relative;width:min(48vw,36svh,310px)}
+.card-cover{display:block;width:100%;height:auto;transform:rotate(-7deg);
+  filter:drop-shadow(0 16px 18px #70421f45)}
+.card-invitation{position:absolute;top:50%;left:calc(100% + min(3vw,24px));margin:0;
+  transform:translateY(-50%);width:max-content;color:#65416f;font-size:clamp(14px,2.6vw,20px);
+  font-weight:650;line-height:1.45}
+@media(max-width:360px){.card-display{width:44vw}.card-invitation{left:calc(100% + 6px)}}
 </style>
 </head>
 <body>
-<main>
-<canvas aria-label="星光环绕、缓缓旋转的圣诞树" role="img"></canvas>
+
+<div class="intro" id="christmas-intro" hidden>
+  <div class="intro-snow" aria-hidden="true"><i style="--x:65%;--size:5.4px;--blur:1.2px;--opacity:0.63;--time:13.5s;--delay:-12.9s;--drift:-26px"></i><i style="--x:53%;--size:20.9px;--blur:4.6px;--opacity:0.72;--time:14.8s;--delay:-8.1s;--drift:39px"></i><i style="--x:98%;--size:18.5px;--blur:4.1px;--opacity:0.60;--time:13.4s;--delay:-3.2s;--drift:24px"></i><i style="--x:12%;--size:4.6px;--blur:1.0px;--opacity:0.51;--time:11.2s;--delay:-9.1s;--drift:33px"></i><i style="--x:50%;--size:12.8px;--blur:2.8px;--opacity:0.39;--time:11.5s;--delay:-11.2s;--drift:-9px"></i><i style="--x:65%;--size:19.1px;--blur:4.2px;--opacity:0.63;--time:19.0s;--delay:-13.7s;--drift:-43px"></i><i style="--x:58%;--size:14.1px;--blur:3.1px;--opacity:0.33;--time:11.2s;--delay:-7.2s;--drift:37px"></i><i style="--x:90%;--size:14.5px;--blur:3.2px;--opacity:0.46;--time:8.3s;--delay:-3.8s;--drift:-43px"></i><i style="--x:63%;--size:11.0px;--blur:2.4px;--opacity:0.77;--time:14.4s;--delay:-6.1s;--drift:48px"></i><i style="--x:62%;--size:18.0px;--blur:4.0px;--opacity:0.48;--time:14.6s;--delay:-7.7s;--drift:54px"></i><i style="--x:61%;--size:11.4px;--blur:2.5px;--opacity:0.55;--time:18.2s;--delay:-14.6s;--drift:19px"></i><i style="--x:6%;--size:7.5px;--blur:1.6px;--opacity:0.83;--time:9.4s;--delay:-4.9s;--drift:31px"></i><i style="--x:60%;--size:5.1px;--blur:1.1px;--opacity:0.33;--time:14.8s;--delay:-13.1s;--drift:54px"></i><i style="--x:58%;--size:20.7px;--blur:4.6px;--opacity:0.65;--time:14.9s;--delay:-10.6s;--drift:15px"></i><i style="--x:39%;--size:8.0px;--blur:1.8px;--opacity:0.57;--time:12.4s;--delay:-8.0s;--drift:35px"></i><i style="--x:55%;--size:12.6px;--blur:2.8px;--opacity:0.36;--time:17.7s;--delay:-14.7s;--drift:-53px"></i><i style="--x:76%;--size:3.7px;--blur:0.8px;--opacity:0.83;--time:15.2s;--delay:-12.2s;--drift:8px"></i><i style="--x:88%;--size:10.2px;--blur:2.2px;--opacity:0.54;--time:10.2s;--delay:-5.2s;--drift:51px"></i><i style="--x:84%;--size:12.9px;--blur:2.8px;--opacity:0.79;--time:12.8s;--delay:-10.6s;--drift:-14px"></i><i style="--x:56%;--size:12.2px;--blur:2.7px;--opacity:0.66;--time:16.9s;--delay:-13.3s;--drift:11px"></i><i style="--x:23%;--size:8.2px;--blur:1.8px;--opacity:0.83;--time:18.1s;--delay:-15.3s;--drift:7px"></i><i style="--x:63%;--size:21.8px;--blur:4.8px;--opacity:0.47;--time:15.1s;--delay:-2.9s;--drift:-2px"></i><i style="--x:11%;--size:5.9px;--blur:1.3px;--opacity:0.24;--time:18.1s;--delay:-10.5s;--drift:53px"></i><i style="--x:31%;--size:4.7px;--blur:1.0px;--opacity:0.31;--time:16.7s;--delay:-0.7s;--drift:15px"></i><i style="--x:81%;--size:22.1px;--blur:4.9px;--opacity:0.46;--time:15.4s;--delay:-0.1s;--drift:31px"></i><i style="--x:62%;--size:14.7px;--blur:3.2px;--opacity:0.66;--time:16.5s;--delay:-15.4s;--drift:15px"></i><i style="--x:76%;--size:7.5px;--blur:1.6px;--opacity:0.77;--time:14.5s;--delay:-7.3s;--drift:-44px"></i><i style="--x:17%;--size:11.4px;--blur:2.5px;--opacity:0.72;--time:9.8s;--delay:-8.9s;--drift:-15px"></i><i style="--x:19%;--size:13.2px;--blur:2.9px;--opacity:0.56;--time:12.3s;--delay:-2.4s;--drift:-53px"></i><i style="--x:9%;--size:22.2px;--blur:4.9px;--opacity:0.27;--time:12.3s;--delay:-4.3s;--drift:-9px"></i><i style="--x:3%;--size:21.7px;--blur:4.8px;--opacity:0.55;--time:18.4s;--delay:-6.0s;--drift:-16px"></i><i style="--x:63%;--size:12.0px;--blur:2.6px;--opacity:0.82;--time:18.1s;--delay:-10.3s;--drift:49px"></i><i style="--x:26%;--size:6.4px;--blur:1.4px;--opacity:0.50;--time:14.5s;--delay:-4.9s;--drift:22px"></i><i style="--x:70%;--size:7.7px;--blur:1.7px;--opacity:0.48;--time:15.8s;--delay:-3.1s;--drift:-32px"></i><i style="--x:6%;--size:3.9px;--blur:0.9px;--opacity:0.52;--time:14.0s;--delay:-10.6s;--drift:-30px"></i><i style="--x:2%;--size:12.7px;--blur:2.8px;--opacity:0.32;--time:15.5s;--delay:-8.2s;--drift:46px"></i><i style="--x:17%;--size:20.7px;--blur:4.5px;--opacity:0.34;--time:17.8s;--delay:-15.1s;--drift:-5px"></i><i style="--x:10%;--size:8.5px;--blur:1.9px;--opacity:0.47;--time:13.9s;--delay:-2.6s;--drift:-32px"></i><i style="--x:99%;--size:8.3px;--blur:1.8px;--opacity:0.74;--time:13.5s;--delay:-3.9s;--drift:-32px"></i><i style="--x:15%;--size:9.5px;--blur:2.1px;--opacity:0.56;--time:13.3s;--delay:-7.0s;--drift:-19px"></i><i style="--x:29%;--size:19.3px;--blur:4.3px;--opacity:0.24;--time:17.3s;--delay:-1.6s;--drift:4px"></i><i style="--x:85%;--size:15.9px;--blur:3.5px;--opacity:0.35;--time:12.5s;--delay:-0.3s;--drift:54px"></i><i style="--x:73%;--size:6.1px;--blur:1.3px;--opacity:0.72;--time:14.2s;--delay:-3.1s;--drift:25px"></i><i style="--x:72%;--size:17.3px;--blur:3.8px;--opacity:0.69;--time:14.1s;--delay:-8.0s;--drift:18px"></i><i style="--x:12%;--size:8.4px;--blur:1.8px;--opacity:0.72;--time:14.1s;--delay:-1.4s;--drift:1px"></i><i style="--x:97%;--size:6.4px;--blur:1.4px;--opacity:0.46;--time:15.5s;--delay:-12.5s;--drift:28px"></i><i style="--x:35%;--size:15.6px;--blur:3.4px;--opacity:0.60;--time:13.6s;--delay:-0.9s;--drift:-14px"></i><i style="--x:1%;--size:6.2px;--blur:1.4px;--opacity:0.49;--time:10.8s;--delay:-9.7s;--drift:45px"></i></div>
+  <div class="intro-content">
+  <div class="intro-act" id="santa-act"><div class="intro-portrait">
+    <svg class="santa" viewBox="40 28 210 285" role="img" aria-label="戴着红帽子的圣诞老人">
+      <defs>
+        <linearGradient id="santa-red" x2=".8" y2="1">
+          <stop stop-color="#dc534b"/><stop offset="1" stop-color="#9a243b"/>
+        </linearGradient>
+        <linearGradient id="santa-fur" x2=".8" y2="1">
+          <stop stop-color="#fff7e6"/><stop offset="1" stop-color="#e1ddd2"/>
+        </linearGradient>
+      </defs>
+                  <g fill="#f9d89d">
+        <path d="M34 82l3 10 10 3-10 3-3 10-3-10-10-3 10-3z"/>
+        <path d="M247 120l2 7 7 2-7 2-2 7-2-7-7-2 7-2z"/>
+        <circle cx="48" cy="203" r="2"/><circle cx="226" cy="71" r="2.5"/>
+        <circle cx="261" cy="202" r="2"/><circle cx="16" cy="154" r="1.5"/>
+      </g>
+      <path d="M47 286c6-54 41-78 98-78s92 24 98 78c2 15-6 24-22 24H69c-16 0-24-9-22-24z" fill="url(#santa-red)"/>
+      <path d="M74 304c3-24 10-39 19-53m123 53c-3-24-10-39-19-53" fill="none" stroke="#771b31" stroke-opacity=".55" stroke-width="4" stroke-linecap="round"/>
+      <path d="M132 255h26v55h-26z" fill="url(#santa-fur)"/>
+      <circle cx="145" cy="296" r="4.5" fill="#bc9258"/>
+      <ellipse cx="91" cy="164" rx="16" ry="20" fill="#da967e"/>
+      <ellipse cx="199" cy="164" rx="16" ry="20" fill="#da967e"/>
+      <ellipse cx="145" cy="154" rx="57" ry="68" fill="#efb497"/>
+      <path d="M90 168c7 24 20 23 34 16 13-8 28-8 42 0 14 7 26 8 34-16 12 14 13 43-2 61-13 16-33 19-53 37-20-18-40-21-53-37-15-18-14-47-2-61z" fill="url(#santa-fur)"/>
+      <path d="M124 151q-8-8-16 0m58 0q8-8 16 0" fill="none" stroke="#58383a" stroke-width="3.6" stroke-linecap="round"/>
+      <ellipse cx="110" cy="168" rx="9" ry="4.5" fill="#da7e75" opacity=".62"/>
+      <ellipse cx="180" cy="168" rx="9" ry="4.5" fill="#da7e75" opacity=".62"/>
+      <path d="M130 198q15 14 30 0" fill="none" stroke="#8d4c48" stroke-width="3.5" stroke-linecap="round"/>
+      <path d="M145 172c-9-5-17 0-22 5-5 5-10 8-17 9 13 9 29 7 39-3 10 10 26 12 39 3-7-1-12-4-17-9-5-5-13-10-22-5z" fill="#fff7e6"/>
+      <ellipse cx="145" cy="172" rx="11" ry="8" fill="#d88a77"/>
+      <path d="M87 118c-1-38 22-79 64-85 35-6 53 19 67 59-12-9-24-12-40-10l22 34z" fill="url(#santa-red)"/>
+      <circle cx="221" cy="97" r="17" fill="url(#santa-fur)"/>
+      <path d="M88 109c27-13 88-14 113-1 12 6 10 26-3 27-25-7-80-8-106 1-14 3-18-21-4-27z" fill="url(#santa-fur)"/>
+    </svg>
+    </div>
+    <p class="intro-line" id="santa-greeting" role="status" hidden>Hi  Thomas !</p>
+  </div>
+  <div class="montage-act" id="james-montage" aria-label="詹姆斯的四个时期" hidden>
+  <img class="montage-figure" src="james-white-23.webp" alt="詹姆斯，白色 23 号球衣" style="--start-x:89%;--start-y:80%;--end-x:27%;--end-y:26%">
+  <img class="montage-figure" src="james-white-6.webp" alt="詹姆斯，白色 6 号球衣" style="--start-x:11%;--start-y:80%;--end-x:73%;--end-y:26%">
+  <img class="montage-figure" src="james-black-23.webp" alt="詹姆斯，黑色 23 号球衣" style="--start-x:50%;--start-y:50%;--end-x:27%;--end-y:74%">
+  <img class="montage-figure" src="james-gold-23.webp" alt="詹姆斯，黄色 23 号球衣" style="--start-x:50%;--start-y:50%;--end-x:73%;--end-y:74%">
+  <button class="gift-trigger" id="open-gift" type="button" aria-label="打开圣诞礼物" hidden><span class="gift" aria-hidden="true"><span class="gift-base"></span><span class="gift-lid"><span class="gift-bow"></span></span></span></button>
+</div>
+  <div class="intro-act james-gift-act" id="james-act" hidden>
+    <p class="speech-bubble" id="james-bubble" hidden><span id="james-greeting" class="waiting-for-reveal" role="status">Merry Christmas, Thomas!</span></p>
+    <p class="speech-bubble card-bubble" id="card-bubble" hidden><span id="card-words" class="waiting-for-reveal" role="status">请收下圣诞贺卡～</span></p>
+    <div class="james-rise-window"><div class="intro-portrait" id="james-portrait">
+      <img class="lebron" src="lebron-cutout.png" alt="身穿费城 76 人球衣的勒布朗·詹姆斯插画" fetchpriority="high">
+    </div></div>
+    <span class="gift james-gift" aria-hidden="true"><span class="gift-base"></span><span class="gift-lid"><span class="gift-bow"></span></span></span>
+    </div>
+  <div class="card-act" id="card-act" hidden>
+    <div class="card-display">
+      <svg class="card-cover" viewBox="0 0 250 310" role="img" aria-label="饰有圣诞树、雪花和礼物的淡紫色圣诞贺卡">
+        <defs><linearGradient id="lilac-card" x2="1" y2="1"><stop stop-color="#f4e5ff"/><stop offset="1" stop-color="#c6a9e8"/></linearGradient></defs>
+        <rect x="6" y="5" width="235" height="300" rx="15" fill="#b18bd5"/>
+        <rect x="2" y="2" width="235" height="299" rx="15" fill="url(#lilac-card)" stroke="#f9efff" stroke-width="3"/>
+        <path d="M15 24v253" stroke="#ad8ac9" stroke-opacity=".55" stroke-width="2"/>
+        <rect x="27" y="22" width="190" height="257" rx="8" fill="none" stroke="#fff0c2" stroke-width="2"/>
+        <path d="M122 55l6 13 14 2-10 10 2 14-12-7-13 7 3-14-10-10 14-2z" fill="#ffe697" stroke="#fff7ce"/>
+        <path d="M122 88l32 52h-16l34 48h-20l31 37H62l31-37H73l33-48H90z" fill="#547b67"/>
+        <path d="M122 98l23 40h-13l31 48h-15l23 33H72l24-33H81l30-48H98z" fill="#6c9c7c"/>
+        <path d="M98 149q23 13 47 2m-62 30q38 20 76 0m-81 32q45 14 91-1" fill="none" stroke="#ffe6a6" stroke-width="2.5"/>
+        <path d="M121 220v18" stroke="#815b52" stroke-width="9"/>
+        <g fill="#fff5fe"><circle cx="52" cy="70" r="3"/><circle cx="183" cy="97" r="3"/><circle cx="58" cy="164" r="3"/><circle cx="192" cy="190" r="4"/><circle cx="177" cy="57" r="3"/></g>
+        <path d="M56 100v22m-11-11h22m115 20v23m-11-11h22" stroke="#fff7ff" stroke-width="2.5" stroke-linecap="round"/>
+        <rect x="73" y="232" width="34" height="23" rx="3" fill="#bc647d"/><path d="M90 232v23m-17-13h34" stroke="#ffe3a4" stroke-width="3"/>
+        <rect x="143" y="236" width="30" height="19" rx="3" fill="#8965a9"/><path d="M158 236v19m-15-12h30" stroke="#fff1c5" stroke-width="3"/>
+      </svg>
+      <p class="card-invitation" id="card-invitation" role="status" hidden>打开看看吧～</p>
+    </div>
+  </div>
+  </div>
+</div>
+<main id="christmas-card">
+<canvas aria-label="挂着礼物盒、史迪奇和蜡笔小新公仔的旋转圣诞树" role="img"></canvas>
 <section>
-<div class="eyebrow">MERRY CHRISTMAS<span class="recipient">Thomas Yang</span></div>
-<h1>愿星光照耀你的未来</h1>
-<p class="wish">好运与欢喜同在</p>
-<p>希望这个圣诞的你被温暖、快乐和爱包围！</p>
-<button type="button" aria-pressed="false">♫　播放《铃儿响叮当》</button>
-<p id="status" role="status" hidden></p>
-<audio src="bells.wav" preload="none" loop></audio>
+<div class="eyebrow"><span data-card-line>MERRY CHRISTMAS</span><span class="recipient" data-card-line>Thomas Yang</span></div>
+<h1 data-card-line>愿星光照耀你的未来</h1>
+<p class="wish" data-card-line>好运与欢喜同在</p>
+<p data-card-line>希望这个圣诞的你被温暖、快乐和爱包围！</p>
 </section>
 </main>
+<audio src="bells.wav" autoplay preload="auto" loop></audio>
+<p class="audio-hint" id="audio-hint" role="status" hidden>轻触画面开启音乐</p>
 <script>
-const audio=document.querySelector("audio");
-const button=document.querySelector("button");
-const status=document.querySelector("#status");
-audio.volume=.64;
-function updateMusic(){
-  button.textContent=audio.paused?"♫　播放《铃儿响叮当》":"Ⅱ　暂停音乐";
-  button.setAttribute("aria-pressed",String(!audio.paused));
+const audio = document.querySelector("audio");
+const audioHint = document.querySelector("#audio-hint");
+audio.volume = .64;
+
+function hideAudioHint() {
+  audioHint.hidden = true;
+  document.removeEventListener("click", startMusic);
+  document.removeEventListener("keydown", startMusic);
+  document.removeEventListener("WeixinJSBridgeReady", startMusic);
 }
-audio.addEventListener("play",updateMusic);
-audio.addEventListener("pause",updateMusic);
-button.addEventListener("click",async()=>{
-  status.hidden=true;
-  if(!audio.paused){audio.pause();return;}
-  try{await audio.play();}
-  catch{status.textContent="音乐暂时无法播放，请再试一次。";status.hidden=false;}
-});
+
+async function startMusic() {
+  try {
+    await audio.play();
+    hideAudioHint();
+  } catch (error) {
+    if (error.name === "NotAllowedError" && audio.paused) audioHint.hidden = false;
+  }
+}
+
+audio.addEventListener("playing", hideAudioHint, {once: true});
+document.addEventListener("click", startMusic);
+document.addEventListener("keydown", startMusic);
+document.addEventListener("WeixinJSBridgeReady", startMusic);
+startMusic();
 const canvas=document.querySelector("canvas");
 const ctx=canvas.getContext("2d");
 const reduced=matchMedia("(prefers-reduced-motion: reduce)");
@@ -69,6 +245,33 @@ for(let i=0;i<300;i++){
   const h=i/299;
   tree.push({h,r:.035+h*.46,a:h*tau*5,seed:h*50,size:1.4,color:"#ffd482",ribbon:true});
 }
+// Stagger three ornaments around each level of the rotating tree.
+const ornaments = [.32, .56, .81].flatMap((h, level) =>
+  [0, 1, 2].map(index => ({
+    h,
+    r: (.025 + h * .47) * (1 - .28 * ((h * 7) % 1)),
+    a: (index / 3 + level / 9) * tau,
+    ornament: (index + level) % 3,
+  }))
+);
+const ornamentArt = new Image();
+ornamentArt.src = "tree-ornaments.svg";
+const ornamentRegions = [[13, 9, 70, 75], [99, 12, 90, 80], [209, 7, 65, 86]];
+const treeElements = tree.concat(ornaments);
+
+function drawOrnament(kind, x, y, depth, size) {
+  if (depth < -.025 || !ornamentArt.naturalWidth) return;
+  const [sx, sy, sw, sh] = ornamentRegions[kind];
+  const width = size * sw / sh;
+  ctx.globalAlpha = Math.min(1, (depth + .025) / .095);
+  ctx.strokeStyle = "#ffd68e";
+  ctx.lineWidth = Math.max(1, size * .025);
+  ctx.beginPath();
+  ctx.moveTo(x, y - size * .14);
+  ctx.lineTo(x, y + size * .02);
+  ctx.stroke();
+  ctx.drawImage(ornamentArt, sx, sy, sw, sh, x - width / 2, y, width, size);
+}
 const snow=Array.from({length:85},()=>({x:random(),y:random(),speed:.01+random()*.035,r:.45+random()*1.45}));
 let width,height;
 function resize(){
@@ -80,7 +283,6 @@ function resize(){
   ctx.setTransform(ratio,0,0,ratio,0,0);
 }
 window.addEventListener("resize",resize);
-resize();
 function draw(ms){
   const time=reduced.matches?0:ms/1000;
   ctx.clearRect(0,0,width,height);
@@ -106,7 +308,7 @@ function draw(ms){
   ctx.fillStyle=glow;
   ctx.fillRect(cx-scale,base-scale,scale*2,scale*2);
   ctx.restore();
-  const projected=tree.map(point=>{
+  const projected=treeElements.map(point=>{
     const a=point.a+time*.43;
     return {point,x:Math.cos(a)*point.r,z:Math.sin(a)*point.r};
   }).sort((a,b)=>a.z-b.z);
@@ -114,6 +316,10 @@ function draw(ms){
     const perspective=1+z*.36;
     const px=cx+x*scale*perspective;
     const py=top+point.h*scale+z*scale*.19;
+    if (point.ornament !== undefined) {
+      drawOrnament(point.ornament, px, py, z, Math.min(52, scale * .105) * perspective);
+      continue;
+    }
     const twinkle=.78+.22*Math.sin(time*2.2+point.seed);
     ctx.globalAlpha=Math.min(1,(.61+z*.71)*twinkle+(point.ribbon?.18:0));
     ctx.fillStyle=point.color;
@@ -140,7 +346,89 @@ function draw(ms){
   ctx.closePath();ctx.fill();ctx.shadowBlur=0;
   requestAnimationFrame(draw);
 }
-requestAnimationFrame(draw);
+const opening = document.querySelector("#christmas-intro");
+const santaAct = document.querySelector("#santa-act");
+const santaGreeting = document.querySelector("#santa-greeting");
+const montageAct = document.querySelector("#james-montage");
+const openGift = document.querySelector("#open-gift");
+const jamesAct = document.querySelector("#james-act");
+const jamesPortrait = document.querySelector("#james-portrait");
+const jamesBubble = document.querySelector("#james-bubble");
+const jamesGreeting = document.querySelector("#james-greeting");
+const cardBubble = document.querySelector("#card-bubble");
+const cardWords = document.querySelector("#card-words");
+const cardAct = document.querySelector("#card-act");
+const cardInvitation = document.querySelector("#card-invitation");
+const card = document.querySelector("#christmas-card");
+
+function showTree() {
+  opening.hidden = true;
+  const laterLines = Array.from(card.querySelectorAll("[data-card-line]")).slice(1);
+  laterLines.forEach((line, index) => {
+    line.classList.add("waiting-for-reveal");
+    setTimeout(() => line.classList.remove("waiting-for-reveal"), (index + 1) * 2000);
+  });
+  card.hidden = false;
+  resize();
+  requestAnimationFrame(draw);
+}
+
+function showCard() {
+  jamesAct.hidden = true;
+  cardAct.hidden = false;
+  setTimeout(() => {
+    cardInvitation.hidden = false;
+    setTimeout(showTree, 3000);
+  }, 3000);
+}
+
+function offerCard() {
+  jamesBubble.hidden = true;
+  cardBubble.hidden = false;
+  setTimeout(() => {
+    cardWords.classList.remove("waiting-for-reveal");
+    setTimeout(showCard, 3000);
+  }, 2000);
+}
+
+function showJames() {
+  clearTimeout(giftTimer);
+  montageAct.hidden = true;
+  jamesAct.hidden = false;
+  const entranceDuration = reduced.matches ? 0 : 2750;
+  jamesPortrait.classList.add("james-entering");
+  setTimeout(() => {
+    jamesBubble.hidden = false;
+    setTimeout(() => {
+      jamesGreeting.classList.remove("waiting-for-reveal");
+      setTimeout(offerCard, 5000);
+    }, 3000);
+  }, entranceDuration + 2000);
+}
+
+let giftTimer;
+openGift.addEventListener("click", showJames, {once: true});
+
+function showMontage() {
+  santaAct.hidden = true;
+  montageAct.hidden = false;
+  const interval = 1200;
+  const figures = montageAct.querySelectorAll(".montage-figure");
+  figures.forEach((figure, index) => {
+    setTimeout(() => figure.classList.add("entered"), index * interval);
+  });
+  setTimeout(() => {
+    openGift.hidden = false;
+    giftTimer = setTimeout(showJames, 5000);
+  }, figures.length * interval);
+}
+
+card.hidden = true;
+opening.hidden = false;
+setTimeout(() => {
+  santaGreeting.hidden = false;
+  setTimeout(showMontage, 3000);
+}, 4000);
 </script>
 </body>
 </html>
